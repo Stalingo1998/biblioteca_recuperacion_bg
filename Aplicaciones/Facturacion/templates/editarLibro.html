@@ -1,0 +1,96 @@
+{# heredando header y footer #}
+{% extends "./plantilla.html" %}
+{% load static %}
+
+{% block contenido %}
+<div class="row">
+  <div class="col-md-2">
+  </div>
+  <div class="col-md-8">
+    <br> <br>
+    <form class="" action="/procesarActualizacionLibro/" method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      <b>Seleccione el genero</b>
+      <select class="form-control" name="id_genero" id="id_genero" required>
+        <option value="">--Seleccione el genero--</option>
+        {% for genero in generos %}
+        <option value="{{genero.id_bg}}">{{genero.nombre_bg}}</option>
+        {% endfor %}
+      </select>
+
+      <b>Seleccione el autor</b>
+      <select class="form-control" name="id_autor" id="id_autor" required>
+        <option value="">--Seleccione el autor--</option>
+        {% for autor in autores %}
+        <option value="{{autor.id_bg}}">{{autor.nombre_bg}}</option>
+        {% endfor %}
+      </select>
+
+
+
+      <script type="text/javascript">
+        document.getElementById('id_genero').value="{{libro.genero_bg.id_bg}}"
+      </script>
+
+      <script type="text/javascript">
+        document.getElementById('id_autor').value="{{libro.autor_bg.id_bg}}"
+      </script>
+
+
+<br>
+      <input type="hidden" name="id_bg"  value="{{libro.id_bg}}">
+      <b>TITULO</b>
+      <input type="text" name="titulo_bg" id="titulo_bg"
+      value="{{libro.titulo_bg}}" placeholder="Ingrese el apellido"
+      class="form-control" required>
+      <br>
+      <b>EDITORIAL</b>
+      <input type="text" name="editorial_bg"  id="editorial_bg"
+      value="{{libro.editorial_bg}}" placeholder="Ingrese el nombre"
+      class="form-control" required>
+      <br>
+      <b>FECHA DE PUBLICACION</b>
+      <input type="date" name="fecha_publicacion_bg" id="fecha_publicacion_bg"
+      value="{{libro.fecha_publicacion_bg|date:'Y-m-d'}}" placeholder="Ingrese la fecha de publicacion"
+      class="form-control" required>
+      <br>
+      {% if libro.fotografia_portada %}
+        <a href="{{libro.fotografia_portada.url}}" target="_blank">Descargar Documento Actual</a>
+        <br>
+      {% endif %}
+      <input type="file" name="nuevo_documento" id="nuevo_documento" accept="image/*">
+      <br>
+      <small>Seleccione otro documento si desea cambiarlo.</small>
+
+      <br>
+      <center>
+        <button type="submit" name="button"
+        class="btn btn-warning">
+          &nbsp;&nbsp;&nbsp;Editar&nbsp;&nbsp;&nbsp;
+        </button>&nbsp;&nbsp;&nbsp;&nbsp;
+        <a href="/"
+        class="btn btn-danger">
+          Cancelar
+        </a>
+      </center>
+    </form>
+  </div>
+</div>
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--  -->

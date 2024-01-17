@@ -1,0 +1,226 @@
+{% extends "./plantilla.html"%}
+  {% load static %}
+  {%block contenido%}
+
+    <h1>LISTADO DE LIBROS</h1>
+    <br>
+    <ul>
+
+        <div class="row">
+
+              <div class="col-md-5" style="overflow-y: auto; max-height: 400px;">
+                <form action="/guardarLibro/" method="post" enctype="multipart/form-data" id="frm_nuevo_libro">
+                    {% csrf_token %}
+                    <b>SELECCIONE EL GENERO:</b>
+
+                    <select class="form-control" name="id_genero" required>
+                      <option value="">--SELECCIONE EL GENERO  </option>
+                      {% for genero in generos %}
+                      <option value="{{genero.id_bg}}">
+                        {{genero.nombre_bg}}
+                      </option>
+                      {% endfor %}
+                    </select>
+
+                    <b>SELECCIONE EL AUTOR:</b>
+
+                    <select class="form-control" name="id_autor" required>
+                      <option value="">--SELECCIONE EL AUTOR  </option>
+                      {% for autor in autores %}
+                      <option value="{{autor.id_bg}}">
+                        {{autor.nombre_bg}}
+                      </option>
+                      {% endfor %}
+                    </select>
+
+                    <br>
+
+                      <b>TITULO:</b>
+                      <br>
+                      <input type="text" name="titulo_bg" value="" id="titulo_bg" placeholder="Ingrese el titulo" class="form-control" required>
+                      <br>
+                      <b>EDITORIAL:</b>
+                      <input type="text" name="editorial_bg" value="" id="editorial_bg" placeholder="Ingrese el editorial" class="form-control" required>
+                      <br>
+                      <b>FECHA DE PUBLICACION</b>
+                      <input type="date" name="fecha_publicacion_bg"  id="fecha_publicacion_bg" value="" placeholder="Ingrese la  fecha de publicacion"  class="form-control" required>
+
+                      <br>
+                      <b>FOTOGRAFIA PORTADA:</b>
+                      <input type="file" name="fotografia_portada" accept="image/*" id="fotografia_portada" value="" >
+
+
+                    <center>
+                        <button type="submit" name="button" class="btn btn-primary">Guardar</button>
+                        &nbsp;&nbsp;&nbsp;
+                        &nbsp;&nbsp;&nbsp;
+                        &nbsp;&nbsp;&nbsp;
+                        <button type="submit" name="button" class="btn btn-danger">Cancelar</button>
+                    </center>
+                </form>
+            </div>
+            <div class="col-md-7">
+        <div class="d-flex justify-content-center align-items-center">
+          <img class="imagen img-fluid" src="{% static 'img/uni.png' %}" alt="" style="max-width: 800px; height: auto;">
+        </div>
+        <br>
+                <table class="table" id="tbl_libros">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>TITULO</th>
+                            <th>EDITORIAL</th>
+                            <th>FECHA DE PUBLICACION</th>
+                            <th>GENERO</th>
+                            <th>AUTOR</th>
+                            <th>FOTOGRAFIA PORTADA</th>
+                            <th>ACCIONES</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for libro in libros %}
+                            <tr>
+                                <td>{{ libro.id_bg }}</td>
+                                <td>{{ libro.titulo_bg }}</td>
+                                <td>{{ libro.editorial_bg }}</td>
+                                <td>{{ libro.fecha_publicacion_bg }}</td>
+                                <td>{{libro.genero_bg.nombre_bg}}</td>
+                                <td>{{libro.autor_bg.nombre_bg}}</td>
+
+                                <td>{% if libro.fotografia_portada %}
+                                    <a href="{{libro.fotografia_portada.url}}" target="_blank">
+                                        <img src="{{libro.fotografia_portada.url}}" alt="" height="50px"></a>
+                                    {% else %}
+                                    <b>N/A</b>
+                                    {% endif %}
+                                </td>
+
+                                <td>
+                                    <a href="/editarLibro/{{libro.id_bg}}" class="btn btn-warning">Editar</a>
+                                    <a href="javascript:void(0)"
+                                    onclick="eliminarLibro('/eliminarLibro/{{libro.id_bg}}');"class="btn btn-danger">Eliminar</a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+
+                <!-- Agregar una fila para la imagen debajo de la tabla -->
+            <br>
+
+
+    </ul>
+
+    <script type="text/javascript">
+function eliminarLibro(url) {
+  iziToast.question({
+      timeout: 15000,
+      close: true,
+      overlay: true,
+      displayMode: 'once',
+      id: 'question',
+      zindex: 999,
+      title: 'CONFIRMACIÓN',
+      message: '¿Está seguro de eliminar el cliente seleccionado?',
+      position: 'center',
+      buttons: [
+          ['<button><b>SI</b></button>', function (instance, toast) {
+              instance.hide({ transitionOut: 'fadeOut' }, toast, 'button');
+              window.location.href=url;
+          }, true],
+          ['<button>NO</button>', function (instance, toast) {
+
+              instance.hide({ transitionOut: 'fadeOut' }, toast, 'button');
+
+          }],
+      ]
+  });
+}
+</script>
+<script type="text/javascript">
+   $("#frm_nuevo_libro").validate({
+     rules:{
+           "id_provincia":{
+             required:true
+           },
+       "nombre_bg":{
+         required:true
+
+       },
+       "direccion_bg":{
+         required:true,
+       },
+       "fecha_nacimiento_bg":{
+         required:true
+       },
+       "cedula_bg":{
+         required:true,
+         number:true
+
+       },
+       "apellido_bg":{
+         required:true
+       },
+       "correo_bg":{
+         required:true,
+         email:true
+       }
+
+
+     },
+     messages:{
+       "id_provincia":{
+             required:"POR FAVOR SELECCIONE LA PROVINCIA"
+           },
+
+       "nombre_bg":{
+         required:"DEBE INGRESAR EL NOMBRE DEL CLIENTE"
+
+       },
+       "direccion_bg": {
+         required: "DEBE INGRESAR LA DIRECCION DEL CLIENTE",
+       },
+       "fecha_nacimiento_bg":{
+         required:"DEBE INGRESAR LA FECHA DE NACIMIENTO DEL CLIENTE"
+
+       },
+       "cedula_bg":{
+         required:"DEBE INGRESAR  LA CEDULA DEL CLIENTE",
+         number: "INGRESE SOLO NÚMEROS EN LA CEDULA"
+
+       },
+       "apellido_bg":{
+         required:"DEBE INGRESAR  EL APELLIDO DEL CLIENTE",
+
+       },
+       "correo_bg":{
+         required:"DEBE INGRESAR  EL CORREO DEL CLIENTE",
+         email:"DIRECCION DE EMAIL  NO VALIDA"
+
+
+       }
+
+     }
+   });
+</script>
+
+    <script type="text/javascript">
+           //let table = new DataTable('#tbl_clientes');
+            $('#tbl_libros').DataTable( {
+              "language": {
+                "url": "https://cdn.datatables.net/plug-ins/1.10.24/i18n/Spanish.json"
+            },
+              dom: 'Bfrtip',
+              buttons: [
+                  {
+                      extend: 'pdfHtml5',
+                      messageTop: 'REPORTE DE CLIENTES - DJANGO Y DATATABLES.'
+                  },
+                  'print',
+                  'csv'
+              ]
+            } );
+          </script>
+
+
+  {%endblock%}

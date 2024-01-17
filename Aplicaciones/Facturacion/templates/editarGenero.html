@@ -1,0 +1,61 @@
+{# heredando header y footer #}
+{% extends "./plantilla.html" %}
+{% load static %}
+
+{% block contenido %}
+<div class="row">
+  <div class="col-md-2">
+  </div>
+  <div class="col-md-8">
+    <br> <br>
+    <form class="" action="/procesarActualizacionGenero/" method="post" id="frm_nuevo_genero" >
+      {% csrf_token %}
+
+      <input type="hidden" name="id_bg"  value="{{genero.id_bg}}">
+      <b>NOMBRE</b>
+      <input type="text" name="nombre_bg" id="nombre_bg"
+      value="{{genero.nombre_bg}}" placeholder="Ingrese el nombre del genero"
+      class="form-control" required>
+      <br>
+      <b>DESCRIPCION</b>
+      <input type="text" name="descripcion_bg" id="descripcion_bg"
+      value="{{genero.descripcion_bg}}" placeholder="Ingrese la descripcion"
+      class="form-control" required>
+      <br>
+      <b>INGRESE LA IMAGEN</b>
+    <input type="text" name="fotografia_referencia" id="fotografia_referencia"
+    value="{{genero.fotografia_referencia}}" placeholder="Ingrese la fotografia"
+    class="form-control" required>
+    <br>
+      <br>
+      <center>
+        <button type="submit" name="button"
+        class="btn btn-warning">
+          &nbsp;&nbsp;&nbsp;Editar&nbsp;&nbsp;&nbsp;
+        </button>&nbsp;&nbsp;&nbsp;&nbsp;
+        <a href="/"
+        class="btn btn-danger">
+          Cancelar
+        </a>
+      </center>
+    </form>
+  </div>
+</div>
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--  -->

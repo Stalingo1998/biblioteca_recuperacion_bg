@@ -1,0 +1,154 @@
+{% extends "./plantilla.html"%}
+  {% load static %}
+  {%block contenido%}
+
+    <h1>LISTADO PROFESIONES</h1>
+
+    <br>
+    <ul>
+
+        <div class="row">
+          <div class="col-md-5" style="overflow-y: auto; max-height: 400px;">
+                <form action="/guardarProfesion/" method="post" enctype="multipart/form-data" id="frm_nuevo_profesion">
+                    {% csrf_token %}
+                    <br>
+                    <b>NOMBRE:</b>
+                    <input type="text" name="nombre_bg" value="" id="nombre_bg" placeholder="Ingrese el nombre" class="form-control" required>
+                    <br>
+                    <b>DESCRIPCION:</b>
+                    <input type="text" name="descripcion_bg" value="" id="descripcion_bg" placeholder="Ingrese la descripcion" class="form-control" required>
+
+                    <br>
+                    <center>
+                        <button type="submit" name="button" class="btn btn-primary">Guardar</button>
+                        &nbsp;&nbsp;&nbsp;
+                        &nbsp;&nbsp;&nbsp;
+                        &nbsp;&nbsp;&nbsp;
+                        <button type="submit" name="button" class="btn btn-danger">Cancelar</button>
+                    </center>
+                </form>
+            </div>
+            <div class="col-md-7">
+        <div class="d-flex justify-content-center align-items-center">
+        </div>
+        <br>
+                <table class="table table-sm" id="tbl_profesiones">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>NOMBRE</th>
+                            <th>DESCRIPCION</th>
+
+                            <th>ACCIONES</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for profesion in profesiones %}
+                            <tr>
+                                <td>{{ profesion.id_bg }}</td>
+                                <td>{{ profesion.nombre_bg }}</td>
+                                <td>{{ profesion.descripcion_bg }}</td>
+
+                                <td>
+                                    <a href="/editarProfesion/{{profesion.id_bg}}" class="btn btn-warning btn-sm">Editar</a>
+                                    <a href="javascript:void(0)"
+                                    onclick="eliminarProfesion('/eliminarProfesion/{{profesion.id_bg}}');"class="btn btn-danger btn-sm">Eliminar</a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+
+                <!-- Agregar una fila para la imagen debajo de la tabla -->
+            <br>
+
+
+    </ul>
+
+    <script type="text/javascript">
+function eliminarProfesion(url) {
+  iziToast.question({
+      timeout: 15000,
+      close: true,
+      overlay: true,
+      displayMode: 'once',
+      id: 'question',
+      zindex: 999,
+      title: 'CONFIRMACIÓN',
+      message: '¿Está seguro de eliminar el cliente seleccionado?',
+      position: 'center',
+      buttons: [
+          ['<button><b>SI</b></button>', function (instance, toast) {
+              instance.hide({ transitionOut: 'fadeOut' }, toast, 'button');
+              window.location.href=url;
+          }, true],
+          ['<button>NO</button>', function (instance, toast) {
+
+              instance.hide({ transitionOut: 'fadeOut' }, toast, 'button');
+
+          }],
+      ]
+  });
+}
+</script>
+
+    <script type="text/javascript">
+       $("#frm_nuevo_profesion").validate({
+         rules:{
+           "nombre_bg":{
+             required:true
+
+           },
+           "poblacion_bg":{
+             required:true,
+             number:true
+           },
+           "capital_bg":{
+             required:true
+           },
+           "fotografia":{
+             required:true
+           }
+
+         },
+         messages:{
+
+           "nombre_bg":{
+             required:"DEBE INGRESAR EL NOMBRE DE LA PROVINCIA"
+
+           },
+           "poblacion_bg": {
+             required: "DEBE INGRESAR LA POBLACION DE LA PROVINCIA",
+             number: "INGRESE SOLO NÚMEROS EN LA POBLACIÓN"
+           },
+           "capital_bg":{
+             required:"DEBE INGRESAR LA CAPITAL DE LA PROVINCIA"
+
+           },
+           "fotografia":{
+             required:"SELECCIONE LA FOTOGRAFIA DE LA PROVINCIA"
+           }
+         }
+       });
+    </script>
+
+    <script type="text/javascript">
+           //let table = new DataTable('#tbl_clientes');
+            $('#tbl_profesiones').DataTable( {
+              "language": {
+                "url": "https://cdn.datatables.net/plug-ins/1.10.24/i18n/Spanish.json"
+            },
+              dom: 'Bfrtip',
+              buttons: [
+                  {
+                      extend: 'pdfHtml5',
+                      messageTop: 'REPORTE DE CLIENTES - DJANGO Y DATATABLES.'
+                  },
+                  'print',
+                  'csv'
+              ]
+            } );
+          </script>
+
+
+  {%endblock%}

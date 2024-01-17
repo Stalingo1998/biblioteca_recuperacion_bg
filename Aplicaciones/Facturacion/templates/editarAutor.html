@@ -1,0 +1,84 @@
+{# heredando header y footer #}
+{% extends "./plantilla.html" %}
+{% load static %}
+
+{% block contenido %}
+<div class="row">
+  <div class="col-md-2">
+  </div>
+  <div class="col-md-8">
+    <br> <br>
+    <form class="" action="/procesarActualizacionAutor/" method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      <b>Seleccione el pais</b>
+      <select class="form-control" name="id_profesion" id="id_profesion" required>
+        <option value="">--Seleccione la profesion--</option>
+        {% for profesion in profesiones %}
+        <option value="{{profesion.id_bg}}">{{profesion.nombre_bg}}</option>
+        {% endfor %}
+      </select>
+
+
+
+      <script type="text/javascript">
+        document.getElementById('id_profesion').value="{{autor.profesion_bg.id_bg}}"
+      </script>
+
+
+<br>
+      <input type="hidden" name="id_bg"  value="{{autor.id_bg}}">
+      <b>APELLIDO</b>
+      <br>
+      <input type="text" name="apellido_bg" id="apellido_bg"
+      value="{{autor.apellido_bg}}" placeholder="Ingrese el apellido"
+      class="form-control" required>
+      <br>
+      <b>NOMBRE</b>
+      <input type="text" name="nombre_bg"  id="nombre_bg"
+      value="{{autor.nombre_bg}}" placeholder="Ingrese el nombre"
+      class="form-control" required>
+      <b>EDAD</b>
+      <input type="number" name="edad_bg" id="edad_bg"
+      value="{{autor.edad_bg}}" placeholder="Ingrese la edad"
+      class="form-control" required>
+      <br>
+      {% if autor.fotografia_portada %}
+        <a href="{{autor.fotografia_portada.url}}" target="_blank">Descargar Documento Actual</a>
+        <br>
+      {% endif %}
+      <input type="file" name="nuevo_documento" id="nuevo_documento" accept=".pdf">
+      <br>
+      <small>Seleccione otro documento si desea cambiarlo.</small>
+
+      <br>
+      <center>
+        <button type="submit" name="button"
+        class="btn btn-warning">
+          &nbsp;&nbsp;&nbsp;Editar&nbsp;&nbsp;&nbsp;
+        </button>&nbsp;&nbsp;&nbsp;&nbsp;
+        <a href="/"
+        class="btn btn-danger">
+          Cancelar
+        </a>
+      </center>
+    </form>
+  </div>
+</div>
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--  -->

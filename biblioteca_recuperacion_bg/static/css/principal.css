@@ -1,0 +1,101 @@
+table{
+  border: 3px solid black !important;
+
+}
+
+
+label.error{
+  color:red;
+  font-weight: bold;
+}
+
+input.error, select.error, textarea.error{
+  border: 1px solid red;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+  background: linear-gradient(to right, #dcdcdc, #f8f8f8);
+  background-image: url('https://png.pngtree.com/thumb_back/fh260/background/20210408/pngtree-funny-alphabet-education-colorful-cute-image_603563.jpg');
+  background-size: cover; /* Hace que la imagen cubra toda la pantalla */
+  background-position: center; /* Centra la imagen en la pantalla */
+  background-repeat: no-repeat; /* Evita que la imagen se repita */
+}
+
+
+
+
+       h1 {
+           text-align: center;
+       }
+
+       .row {
+           margin: 20px 0;
+       }
+
+       .col-md-5 {
+           background-color: #f8f9fa;
+           padding: 20px;
+           border-radius: 10px;
+       }
+
+       .imagen {
+           width: 100px;
+           border-radius: 10px;
+           margin-top: 20px;
+       }
+
+       footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  background-color: #333;
+  color: #fff;
+  padding: 20px;
+  text-align: center;
+}
+
+       footer a {
+           color: #fff;
+           text-decoration: none;
+       }
+
+       footer a:hover {
+           text-decoration: underline;
+       }
+       .navbar-dark .navbar-toggler-icon {
+                   filter: brightness(0) invert(1); /* Icono del botón en blanco */
+               }
+               .navbar-dark .navbar-toggler {
+                   border-color: #6c757d; /* Borde del botón en gris */
+               }
+               .offcanvas-body {
+                   background-color: #343a40; /* Fondo del menú en gris oscuro */
+               }
+               .navbar-nav .nav-link {
+                   color: #adb5bd !important; /* Color del texto del menú en gris claro */
+               }
+               .navbar-nav .nav-link:hover {
+                   color: #ffffff !important; /* Color del texto del menú al pasar el mouse en blanco */
+               }
+
+
+               .nav {
+                   display: flex;
+                   flex-direction: column;
+                 }
+
+                 .nav-item {
+                   margin-bottom: 10px;
+                 }
+
+
+                 .nav-link.active {
+                   font-weight: bold;
+                   color: #007bff; /* color */
+                 }
+                 #hero {
+                     background: linear-gradient(to right, #757575, #a0a0a0); /* Cambia estos colores según tus preferencias */
+                 }

@@ -1,0 +1,214 @@
+{% extends "./plantilla.html"%}
+  {% load static %}
+  {%block contenido%}
+
+    <h1>LISTADO DE AUTORES</h1>
+    <br>
+    <ul>
+
+        <div class="row">
+
+              <div class="col-md-5" style="overflow-y: auto; max-height: 400px;">
+                <form action="/guardarAutor/" method="post" enctype="multipart/form-data" id="frm_nuevo_autor">
+                    {% csrf_token %}
+                    <b>SELECCIONE LA PROFESION:</b>
+
+                    <select class="form-control" name="id_profesion" required>
+                      <option value="">--SELECCIONE LA PROFESION  </option>
+                      {% for profesion in profesiones %}
+                      <option value="{{profesion.id_bg}}">
+                        {{profesion.nombre_bg}}
+                      </option>
+                      {% endfor %}
+                    </select>
+
+                    <br>
+
+                      <b>APELLIDO:</b>
+                      <br>
+                      <input type="text" name="apellido_bg" value="" id="apellido_bg" placeholder="Ingrese la Apellido" class="form-control" required>
+                      <br>
+                      <b>NOMBRE:</b>
+                      <input type="text" name="nombre_bg" value="" id="nombre_bg" placeholder="Ingrese la Nombre" class="form-control" required>
+                      <br>
+                      <b>EDAD:</b>
+                      <input type="number" name="edad_bg" value="" id="edad_bg" placeholder="Ingrese la edad" class="form-control" required>
+
+                      <br>
+                      <b>DOCUMENTO:</b>
+                      <input type="file" name="fotografia_portada" accept=".pdf" id="fotografia_portada" value="" >
+
+
+                    <center>
+                        <button type="submit" name="button" class="btn btn-primary">Guardar</button>
+                        &nbsp;&nbsp;&nbsp;
+                        &nbsp;&nbsp;&nbsp;
+                        &nbsp;&nbsp;&nbsp;
+                        <button type="submit" name="button" class="btn btn-danger">Cancelar</button>
+                    </center>
+                </form>
+            </div>
+            <div class="col-md-7">
+        <div class="d-flex justify-content-center align-items-center">
+          <img class="imagen img-fluid" src="{% static 'img/uni.png' %}" alt="" style="max-width: 800px; height: auto;">
+        </div>
+        <br>
+                <table class="table" id="tbl_autores">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>APELLIDO</th>
+                            <th>NOMBRE</th>
+                            <th>EDAD</th>
+                            <th>PROFESION</th>
+                            <th>HOJA DE VIDA</th>
+                            <th>ACCIONES</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for autor in autores %}
+                            <tr>
+                                <td>{{ autor.id_bg }}</td>
+                                <td>{{ autor.apellido_bg }}</td>
+                                <td>{{ autor.nombre_bg }}</td>
+                                <td>{{ autor.edad_bg }}</td>
+                                <td>{{autor.profesion_bg.nombre_bg}}</td>
+                                <td>
+                                  {% if autor.fotografia_portada %}
+                                    <object data="{{ autor.fotografia_portada.url }}" type="application/pdf" width="100%" height="500px">
+                                      <p> <a href="{{ autor.fotografia_portada.url }}" target="_blank">Descargar PDF</a></p>
+                                    </object>
+                                  {% else %}
+                                    <b>N/A</b>
+                                  {% endif %}
+                                </td>
+
+                                <td>
+                                    <a href="/editarAutor/{{autor.id_bg}}" class="btn btn-warning">Editar</a>
+                                    <a href="javascript:void(0)"
+                                    onclick="eliminarAutor('/eliminarAutor/{{autor.id_bg}}');"class="btn btn-danger">Eliminar</a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+
+                <!-- Agregar una fila para la imagen debajo de la tabla -->
+            <br>
+
+
+    </ul>
+
+    <script type="text/javascript">
+function eliminarAutor(url) {
+  iziToast.question({
+      timeout: 15000,
+      close: true,
+      overlay: true,
+      displayMode: 'once',
+      id: 'question',
+      zindex: 999,
+      title: 'CONFIRMACIÓN',
+      message: '¿Está seguro de eliminar el cliente seleccionado?',
+      position: 'center',
+      buttons: [
+          ['<button><b>SI</b></button>', function (instance, toast) {
+              instance.hide({ transitionOut: 'fadeOut' }, toast, 'button');
+              window.location.href=url;
+          }, true],
+          ['<button>NO</button>', function (instance, toast) {
+
+              instance.hide({ transitionOut: 'fadeOut' }, toast, 'button');
+
+          }],
+      ]
+  });
+}
+</script>
+<script type="text/javascript">
+   $("#frm_nuevo_autor").validate({
+     rules:{
+           "id_provincia":{
+             required:true
+           },
+       "nombre_bg":{
+         required:true
+
+       },
+       "direccion_bg":{
+         required:true,
+       },
+       "fecha_nacimiento_bg":{
+         required:true
+       },
+       "cedula_bg":{
+         required:true,
+         number:true
+
+       },
+       "apellido_bg":{
+         required:true
+       },
+       "correo_bg":{
+         required:true,
+         email:true
+       }
+
+
+     },
+     messages:{
+       "id_provincia":{
+             required:"POR FAVOR SELECCIONE LA PROVINCIA"
+           },
+
+       "nombre_bg":{
+         required:"DEBE INGRESAR EL NOMBRE DEL CLIENTE"
+
+       },
+       "direccion_bg": {
+         required: "DEBE INGRESAR LA DIRECCION DEL CLIENTE",
+       },
+       "fecha_nacimiento_bg":{
+         required:"DEBE INGRESAR LA FECHA DE NACIMIENTO DEL CLIENTE"
+
+       },
+       "cedula_bg":{
+         required:"DEBE INGRESAR  LA CEDULA DEL CLIENTE",
+         number: "INGRESE SOLO NÚMEROS EN LA CEDULA"
+
+       },
+       "apellido_bg":{
+         required:"DEBE INGRESAR  EL APELLIDO DEL CLIENTE",
+
+       },
+       "correo_bg":{
+         required:"DEBE INGRESAR  EL CORREO DEL CLIENTE",
+         email:"DIRECCION DE EMAIL  NO VALIDA"
+
+
+       }
+
+     }
+   });
+</script>
+
+    <script type="text/javascript">
+           //let table = new DataTable('#tbl_clientes');
+            $('#tbl_clientes').DataTable( {
+              "language": {
+                "url": "https://cdn.datatables.net/plug-ins/1.10.24/i18n/Spanish.json"
+            },
+              dom: 'Bfrtip',
+              buttons: [
+                  {
+                      extend: 'pdfHtml5',
+                      messageTop: 'REPORTE DE CLIENTES - DJANGO Y DATATABLES.'
+                  },
+                  'print',
+                  'csv'
+              ]
+            } );
+          </script>
+
+
+  {%endblock%}
